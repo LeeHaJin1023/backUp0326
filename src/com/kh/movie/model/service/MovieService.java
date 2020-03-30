@@ -15,6 +15,7 @@ import com.kh.movie.model.dao.MovieDao;
 import com.kh.movie.model.vo.Movie;
 import com.kh.movie.model.vo.MovieCBS;
 import com.kh.movie.model.vo.MovieLHJ;
+import com.kh.movie.model.vo.MovieStillLHJ;
 import com.kh.movie.model.vo.PageInfo;
 import com.kh.still_image.model.vo.StillImageCBS;
 
@@ -23,7 +24,7 @@ public class MovieService {
   
 	/* HAJIN */
 	public MovieLHJ selectList(int movieNo){
-			Connection conn = getConnection();
+		Connection conn = getConnection();
 		MovieLHJ m = new MovieDao().selectList(conn, movieNo);
   
   	close(conn);
@@ -31,6 +32,15 @@ public class MovieService {
   
   }
 	
+	
+	public List<MovieStillLHJ> selectMovieStill(int movieNo) {
+		
+		Connection conn = getConnection();
+		List<MovieStillLHJ> ms = new MovieDao().selectMovieStill(conn, movieNo);
+		
+		close(conn);
+		return ms;
+	}
 	
   
 	public List<Movie> selectScreen(String theaterNo, String screenDate, String lineUp) {
@@ -160,4 +170,6 @@ public class MovieService {
 		
 		return list;
 	}
+	
+	
 }

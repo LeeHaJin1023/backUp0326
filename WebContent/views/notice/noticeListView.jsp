@@ -1,8 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, com.kh.notice.model.vo.Notice" %>    
+<%@ page import="java.util.ArrayList, com.kh.notice.model.vo.*" %>    
 <%
 	ArrayList<Notice> list = (ArrayList<Notice>)request.getAttribute("list");
+
+	PageInfo pi = (PageInfo)request.getAttribute("pi");
+	
+	int listCount = pi.getListCount();
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int endPage = pi.getEndPage();
+	int startPage = pi.getStartPage();
+
+
 %>    
 <!DOCTYPE html>
 <html>
@@ -47,36 +57,61 @@
 	
 	.listArea tbody tr td, .listArea thead tr th{
 		color:black;
+		border-radius:40px;
+		box-shadow:3px 3px 3px 3px lightgray;
+		font-weight:bold;
+		height:30px;
 	}
 	.listArea{
 		margin-top:50px;
 		
 	}
-	#noticeList{
-		margin-top:10px;
-		display:inline-block;
-		float:right;
-		
-	}
-	#noticeList div{
-	width:100px;
-	height:30px;
-	float:left;
-	margin-left:40px;
+	 .pagingArea button{
+        	border-radius:10px;
+        	background:lightred;
+        	outline:0;
+        	border:0;
+        	width:25px;
+        	height:25px;
+        	padding:5px;
+        	color:black;
+      
+        }
+        .pagingArea button:hover{
+        cursor:pointer;
+        background:lightgray;
+        }
+        .pagingArea{
+        	display:inline-block;
+        	width:200px;
+        	margin-left:600px;
+        	margin-top:50px;
+        	height:100px;
+        }
+       .noticeList{
+       	display:inline-block;
+       	margin-left:150px;
+       	width:800px;
+       	padding:5px;
+       }
+       .noticeList div{
+      	margin:5px;
+       	float:left;
+       }
+	.noticeContentDetail{
+		display:none;
+		width:300px;
+		text-align:center;
+		height:300px;
+		margin-left:200px !important;
+		margin-top:50px !important;
 	
 	}
-	#noticeList div:hover{cursor:pointer;}
-	.noticeTitle{
-		width:300px !important;
-	}
-	.noticeContentDetail{
-	width:700px !important;
-	height:200px !important;
-	display:none;
-	margin-left:40px;
-	margin-top:50px;
-	}
-
+	.noticeNo{width:5%;}
+	.noticeTitle{width:40%; text-align:center;}
+	.noticeType{width:10%; padding-left:25px;}
+	.noticeDate{width:10%; text-align:right; padding-left:70px;}
+	.noticeList:hover{cursor:pointer;}
     </style>
     
     
@@ -108,11 +143,10 @@
         	<table class="listArea" align="center">
 			<thead>
 				<tr>	
-					<th width="80">번호</th>
-					<th width="80">분류</th>
-					<th width="500">제목</th>
+					<th width="100">번호</th>
+					<th width="100">분류</th>
+					<th width="400">제목</th>
 					<th width="100">등록일</th>
-					<th width="50">조회수</th>
 				</tr>
 			</thead>
 		</table>
@@ -120,18 +154,51 @@
 				<% if(list.isEmpty()){ %>
 				<%} else{ %>
 					<%for(Notice n:list) {%>
-						<div id="noticeList">
-							<div><%=n.getNoticeNo() %></div>
-							<div><%=n.getNoticeType() %></div>
+						<div class="noticeList">
+							<div class="noticeNo"><%=n.getNoticeNo() %></div>
+							<div class="noticeType"><%=n.getNoticeType() %></div>
 							<div class="noticeTitle"><%=n.getNoticeTitle() %></div>
-							<div><%=n.getNoticeDate() %></div>
-							<div><%=n.getReference() %></div>
+							<div class="noticeDate"><%=n.getNoticeDate() %></div>
 							<div class="noticeContentDetail"><%=n.getNoticeContent() %></div>
 						</div>
+						<hr>
 					<%} %>
 				<%} %>
 	
         </div>
+        
+        <div class="pagingArea" align="center">
+			
+			<button onclick="location.href='<%=contextPath%>/list.no';"> &lt;&lt;</button>	
+			
+			
+			<% if(currentPage == 1){ %>
+				<button disabled> &lt;</button>
+			<%} else { %>
+			<button onclick="location.href='<%=contextPath%>/list.no?currentPage=<%=currentPage-1%>';"> &lt; </button>	
+			<% } %>
+			
+			
+		
+			 <%for(int p=startPage; p<=endPage; p++){ %>
+			 	<%if(currentPage == p){ %>
+			 		<button disabled><%=p%></button>
+			 	<%}else{ %>
+			 		<button onclick="location.href='<%=contextPath%>/list.no?currentPage=<%=p%>';"><%=p%></button>
+			 	<%} %>
+			 <%} %>
+			
+			
+			
+			<%if(currentPage == maxPage){ %>
+				<button disabled> &gt;</button>
+			<%} else { %>
+				<button onclick="location.href='<%=contextPath%>/list.no?currentPage=<%=currentPage+1%>';"> &gt; </button>
+			<%} %>
+			
+		
+			<button onclick="location.href='<%=contextPath%>/list.no?currentPage=<%=maxPage%>';"> &gt;&gt;</button>
+		</div>
         
         <script>
         	$(function(){

@@ -44,16 +44,41 @@ public class InsertQnaServlet extends HttpServlet {
 			loginUserNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
 		}
 		
+		
 		String type = request.getParameter("type");
+		
+	
+		String typeValue = "";
+		
+		switch(type) {
+			case "1" : typeValue = "영화"; break;
+			case "2" : typeValue = "예매/결제"; break;
+			case "3" : typeValue = "홈페이지/모바일";  break;
+			
+		};
+		
+		
+		
 		String kind = request.getParameter("kind");
+		
+		String kindValue = "";
+		switch(kind) {
+			case "1" : kindValue = "건의"; break;
+			case "2" : kindValue = "문의"; break;
+			case "3" : kindValue = "칭찬";  break;
+			case "4" : kindValue = "불만";  break;
+		};
+		
+		
+		
 		String secret = request.getParameter("secret");
 		String secretPwd = request.getParameter("secretPwd");
 		String title = request.getParameter("title");
 		String content = request.getParameter("content");
 		
 		Qna q = new Qna();
-		q.setType(type);
-		q.setKind(kind);
+		q.setType(typeValue);
+		q.setKind(kindValue);
 		q.setSecretStatus(secret);
 		q.setSecretPwd(secretPwd);
 		q.setTitle(title);
@@ -61,7 +86,7 @@ public class InsertQnaServlet extends HttpServlet {
 		
 		int result = new QnaService().insertQna(q, loginUserNo);
 		
-		if(result >0) {
+		if(result > 0) {
 			response.sendRedirect("qnaList.qa");
 		}else {
 			request.setAttribute("msg","게시판 작성 실패");

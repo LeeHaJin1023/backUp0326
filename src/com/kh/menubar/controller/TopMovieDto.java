@@ -2,7 +2,7 @@ package com.kh.menubar.controller;
 
 public class TopMovieDto {
 
-	private Integer movieNo;;
+	private Integer movieNo;
 	private Integer reservedCount;
 	private Integer maxAddfileNo;
 	private String modifyName;

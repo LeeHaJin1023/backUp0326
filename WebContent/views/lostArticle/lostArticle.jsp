@@ -12,6 +12,14 @@
 	int endPage = pi.getEndPage();
 	int startPage = pi.getStartPage();
 	
+	HttpSession ses = request.getSession();
+	int loginUserNo = 0;
+	
+	if((Member)ses.getAttribute("loginUser") == null) {
+		loginUserNo =1;
+	}else {
+		loginUserNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
+	}
 
 
 %>
@@ -58,7 +66,7 @@
 	.listArea tbody tr td, .listArea thead tr th{color:black;}
 	.listArea tbody td{ border-bottom:2px solid lightgray; padding:5px;}
 	.listArea{margin-top:50px;}
-	.listArea thead tr th{background-color:lightred; height:30px; border-radius:40px; box-shadow:3px 3px 3px 3px lightgray;}
+	.listArea thead tr th{background-color:lightred; height:30px; border-radius:40px; box-shadow:3px 3px 3px 3px lightgray; font-weight:bold;}
 	.listArea{margin-top:50px;}
 
 	.lostList tr:hover{
@@ -198,11 +206,15 @@
 		</tbody>
 		<%} %>
 		</table>
- 	<div class="btns">
- 		<%-- <%if(loginUser != null){ %> --%>
- 		<button onclick="insertLost();">작성하기</button>
- 		<%-- <%} %> --%>
- 	</div>
+	 	<%--로그인시 작성하기 보이기 폼 --%>
+	 		 <div class="btns">
+	 	  
+		 	 	 <% if(loginUser != null){ %>
+		 	  
+		 		<button onclick="insertBroom();">작성하기</button>
+		 		
+			</div> 
+		 		 <%} %>
 
  	<!-- The Modal -->
 	    <div id="myModal" class="modal">
@@ -258,16 +270,23 @@
 		var modal = document.getElementById("myModal");
 		var pwdNo;
 		var lost_No;
-		var lostStatus;
+		var Status;
 		
 		
 		
 		$(".lostList tr").click(function(){
 			
-			modal.style.display = "block";
 			pwdNo = $(this).children().eq(4).val();
 			lost_No = $(this).children().eq(0).text();
+			status = $(this).children().eq(2).text();
 			
+			console.log(status);
+			
+			if(status == "Y"){
+			modal.style.display = "block";
+			}else{
+				location.href="<%=contextPath%>/lostDetail.lo?lostNo="+ lost_No;
+			}
 		});
 		
 		$("#myModal span").click(function(){

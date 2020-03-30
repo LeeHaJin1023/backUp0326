@@ -62,7 +62,18 @@
 		font-weight:bold;
 		}
     .qnaDetailTable tr td{border-bottom:1px solid black;}
-    
+    .reContent{
+    	display:inline-block;
+    	width:600px;
+    	height:400px;
+    	margin-top:50px;
+    	text-align:center;
+    	font-weight:bold;
+    	float:left;
+    	margin-left:500px;
+    	line-height:500%
+    }
+    #line{margin-left:400px;}
 </style>
 </head>
 <body>
@@ -113,11 +124,13 @@
 					<td>&nbsp;&nbsp;&nbsp;<%=q.getRegDate() %></td>
 				</tr>
 				<tr>
-					<td colspan="6" height="400">&nbsp;&nbsp;&nbsp;<%=q.getContent() %></td>
+					<td class="cont" colspan="6" height="400">&nbsp;&nbsp;&nbsp;<%=q.getContent() %></td>
 				</tr>
-			
-				
+				<br><hr>
 			</table>
+				<img id ="line" src="<%=contextPath%>/resources/images/line11.jpg" width="800" height="20">
+				<div class="reContent"><%=q.getReplyContent()%></div>
+				<img id ="line" src="<%=contextPath%>/resources/images/line11.jpg" width="800" height="20">
 		
 			
 		</div>

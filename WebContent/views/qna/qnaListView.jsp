@@ -12,6 +12,15 @@
 	int endPage = pi.getEndPage();
 	int startPage = pi.getStartPage();
 	
+	HttpSession ses = request.getSession();
+	int loginUserNo = 0;
+	
+	if((Member)ses.getAttribute("loginUser") == null) {
+		loginUserNo =1;
+	}else {
+		loginUserNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
+	}
+	
 	
 	
 %>
@@ -60,7 +69,7 @@
 	}
 	.listArea tbody td{ border-bottom:2px solid lightgray; padding:5px;}
 	.listArea{margin-top:50px;}
-	.listArea thead tr th{background-color:lightred; height:30px; border-radius:40px; box-shadow:3px 3px 3px 3px lightgray;}
+	.listArea thead tr th{background-color:lightred; height:30px; border-radius:40px; box-shadow:3px 3px 3px 3px lightgray; font-weight:bold;}
     .qnaList tr:hover{
     	cursor:pointer;
     	box-shadow:3px 3px 3px 3px gray;
@@ -199,17 +208,21 @@
 						<td><%=q.getReplyStatus() %></td>
 						<input type="hidden" value="<%=q.getSecretPwd() %>">
 					</tr>
+				
 				<%} %>
 				</tbody>
 			</table>
 			<%} %>
 			
-				<div class="btns">
-		 	<%-- <%if(loginUser.getId() != null){ %> --%>
-		 		<button onclick="insertQna();">작성하기</button>
+			<%--로그인시 작성하기 보이기 폼 --%>
+	 		 <div class="btns">
+	 	  
+		 	 	 <% if(loginUser != null){ %>
+		 	  
+		 		<button onclick="insertBroom();">작성하기</button>
 		 		
-		 		<%-- <%} %> --%>
-		 	</div>
+			</div> 
+		 		 <%} %>
 			
 			<!-- The Modal -->
 	    <div id="myModal" class="modal">
@@ -271,11 +284,18 @@
 	var modal = document.getElementById('myModal');
     var pwdNo;     
     var qnaNo;
+    var status;
 	
 	$(".qnaList tr").click(function() {
-	    modal.style.display = "block";
 	    pwdNo = $(this).children().eq(7).val();
 	    qnaNo = $(this).children().eq(0).text();
+	    status = $(this).children().eq(5).text();
+	    
+	    if(status == "Y"){
+	    modal.style.display = "block";
+	    } else{
+	    	location.href="<%=contextPath%>/qnaDetail.qa?qnaNo=" + qnaNo;
+	    }
 	});
 	
 	$("#myModal span").click(function() {

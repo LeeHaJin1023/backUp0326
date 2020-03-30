@@ -1,31 +1,23 @@
 package com.kh.movie.controller;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kh.menubar.controller.NewMoviesDto;
-import com.kh.menubar.controller.TopMovieDto;
-import com.kh.movie.model.service.MovieService;
-import com.kh.movie.model.vo.MovieLHJ;
-import com.kh.movie.model.vo.MovieStillLHJ;
-
 /**
- * Servlet implementation class MovieDetailServlet
+ * Servlet implementation class MovieStillServlet
  */
-@WebServlet("/movieDetail.mo")
-public class MovieDetailServlet extends HttpServlet {
+@WebServlet("/movieStill.mo")
+public class MovieStillServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MovieDetailServlet() {
+    public MovieStillServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,19 +29,7 @@ public class MovieDetailServlet extends HttpServlet {
 	
 		String movieNo = request.getParameter("movieNo");
 		
-	
-		MovieLHJ m = new MovieService().selectList(Integer.parseInt(movieNo));
-		
-		List<MovieStillLHJ> ms = new MovieService().selectMovieStill(Integer.parseInt(movieNo));
-		
-		
-		request.setAttribute("m", m);
-		request.setAttribute("ms", ms);
-		
-		request.getRequestDispatcher("views/movie/MovieDetail.jsp").forward(request,response);
-		
-		List<TopMovieDto> tmdPoster = new MovieService().topFiveMovies(0);
-		List<NewMoviesDto> nm = new MovieService().newMovies();
+		System.out.println(movieNo);
 		
 	}
 

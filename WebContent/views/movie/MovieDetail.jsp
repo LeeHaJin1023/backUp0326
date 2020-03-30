@@ -10,7 +10,10 @@
 
 	List<TopMovieDto> tmdPoster = new MovieService().topFiveMovies(0);
 	List<NewMoviesDto> nm = new MovieService().newMovies();
+	
+	List<MovieStillLHJ> ms = (ArrayList<MovieStillLHJ>)request.getAttribute("ms");
 
+	
 %>	
 <!DOCTYPE html>
 <html>
@@ -18,7 +21,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	.outer{color:black;}
+	.outer{color:black; width:1200px;}
 	#movieDetail{
 		width:300px;
 		font-size:30px;
@@ -100,8 +103,8 @@
 		width:600px;
 		height:400px;
 		border:1px solid black;
-		margin-left:800px;
-		margin-top:-400px;
+		margin-left:500px;
+		
 	}
 	#input button{
 		outline:0;
@@ -118,6 +121,7 @@
 	}
 	#input button:hover{cursor:pointer; background:gray;}
 	.replyArea{
+		display:inline-block;
 		color:black;
 		margin-left:400px;
 		width:900px;
@@ -187,6 +191,7 @@
 		  border-radius: 50%;
 		  display: inline-block;
 		  transition: background-color 0.6s ease;
+		  
 		}
 		
 		.active, .dot:hover {
@@ -219,10 +224,12 @@
 		.stillImg{
 			display:inline-block;
 			float:right;
-			width:500px;
+			width:400px;
 			height:500px;
 			margin-top:-300;
-			margin-right:100px;
+		}
+		.dotArea{
+			margin-left:100px;
 		}
 	.star_rating {font-size:0; letter-spacing:-4px;}
 	.star_rating a {
@@ -278,8 +285,19 @@
             color: black;
             text-decoration: none;
             cursor: pointer;
-	
-		
+            }
+		 #detailView{
+        	background:lightcoral;
+        	border-radius:10px;
+        	width:60px;
+        	height:30px;
+        	outline:0;
+        	border:0;
+        	padding:5px;
+        }
+        #detailView:hover{cursor:pointer;}
+        #rTable td:first-child{align:center; padding-left:50px; padding-right:5px;}
+		#replyTable tr{border-radius:5px;}
 </style>
 
 </head>
@@ -310,7 +328,7 @@
 		<div id="movieInfo">
 			<p>감독 : <%=m.getDirector() %></p>
 			<p>배우 : <%=m.getActor() %></p>
-			<p>장르 : 드라마, 전쟁, 코미디 / 기본 : <%=m.getAgeLimit() %>, <%=m.getRuntime() %></p>
+			<p>장르 : 드라마, 전쟁, 코미디 / 기본 : <%=m.getAgeLimit() %>세, <%=m.getRuntime() %>분</p>
 			<p>개봉 : date넣기</p>
 		</div>
 		<div id="input">
@@ -322,42 +340,48 @@
 	<div id="movieSyno">
 		<p><%=m.getSynopsis() %></p>
 	</div>
+
 	<div class="stillImg">
 		<div class="slideshow-container">
-		
-		<div class="mySlides fade">
-		  <div class="numbertext">1 / 3</div>
-		  <img src="<%=contextPath %>/resources/images/beast01.jpg" style="width:500px; height:400px;">
-		
-		</div>
-		
-		<div class="mySlides fade">
-		  <div class="numbertext">2 / 3</div>
-		  <img src="<%=contextPath %>/resources/images/beast02.jpg" style="width:500px; height:400px;">
-		
-		</div>
-		
-		<div class="mySlides fade">
-		  <div class="numbertext">3 / 3</div>
-		  <img src="<%=contextPath %>/resources/images/beast03.jpg" style="width:500px; height:400px;">
-		
-		</div>
-		
+		<%if(ms.size() <= 5){ %>
+			<% for(int i=0; i<ms.size(); i++ ){ %>
+			<div class="mySlides fade">
+			  <div class="numbertext"><%= (i+1) %>/ <%=ms.size()%></div>
+			  <img src="<%=contextPath %>/resources/images/<%=ms.get(i).getModifyName() %>" style="width:500px; height:400px;">
+			</div>
+			<%} %>
+		<%} else { %>
+			<% for(int i=0; i<ms.size(); i++ ){ %>
+			<div class="mySlides fade">
+			  <div class="numbertext"><%=(i+1) %>/ <%=ms.size()%></div>
+			  <img src="<%=contextPath %>/resources/images/<%=ms.get(i).getModifyName() %>" style="width:500px; height:400px;">
+			</div>
+			<% } for(int i=0; i< 5-ms.size(); i++){ %>
+			<div class="mySlides fade">
+			  <div class="numbertext"><%=(i+1)%>/ <%=ms.size()%></div>
+			  <img src="<%=contextPath %>/resources/images/noImageMain.jpg" style="width:500px; height:400px;">
+			</div>
+		<%} } %>
 		</div>
 		<br>
 		
-		<div style="text-align:center">
+		<div class="dotArea" style="text-align:center">
 		  <span class="dot" onclick="currentSlide(1)"></span> 
 		  <span class="dot" onclick="currentSlide(2)"></span> 
 		  <span class="dot" onclick="currentSlide(3)"></span> 
 		</div>
 	</div>
 	
-	
 		<!--  댓글 관련 영역 -->
-	<div class="replyArea"> 
+		<div id="movieDetail">
+			<img src="<%=contextPath %>/resources/images/movieChart2.png" width="50px" height="50px" align="center">
+			<div id="name1">Review
+				<img src="<%=contextPath %>/resources/images/line.png" width="300px" height="20px" >
+			</div>
+		</div>
+		<div class="replyArea"> 
 		<!-- 댓글 작성하는 table -->
-		<table id="replyTable" border="2"  align="center"> 
+		<table id="replyTable" border="2" align="center"> 
 			<tr>
 				<th>
 				<div>
@@ -392,18 +416,20 @@
 		      <div class="modal-content">
 		        <span class="close">&times;</span>                                                               
 		        <h6>신고내용을 선택해주세요.</h6>
-		        <table>
+		        <br>
+		        <table id="rTable">
 		        	<tr>
-		        		<td>사유 : </td>
+		        		<td>&nbsp;&nbsp;&nbsp;사유 :&nbsp;&nbsp;</td>
 		        		<td>
-		        			<select>
-		        				<option>스포일러</option>
-		        				<option>광고성 발언</option>
-		        				<option>부적절한 언어행동</option>
+		        			<select name="reviewReport" id="reviewRep">
+		        				<option value="1">스포일러</option>
+		        				<option value="2">광고성 발언</option>
+		        				<option value="3">부적절한 언어행동</option>
 		        			</select>
 		        		</td>
 		        	</tr>
 		        </table>
+		        <br>
 		        <button type="button" id="detailView">입력</button>
 		      </div>
 		 
@@ -411,18 +437,32 @@
 		
 	</div>
 </div>
+	<form id="reviewForm" method="post" action="<%=contextPath%>/reviewRe.re">
+		<input type="hidden" name="reviewId" value="">
+		<input type="hidden" name="reviewContent" value="">
+		<input type="hidden" name="reviewRe" value="">
+		<input type="hidden" name="reviewNo" value="">
+		<input type="hidden" name="movieNo" value="">
+	</form>
+	
+	
 	<script>
 	
 	var count = 0;
 	var modal = document.getElementById('myModal');
 	var reviewNo;
 	var reviewChart;
+	var reviewContent;
+	var form = document.getElementById("reviewForm");
+	var movieNo;
+	
 	
 	$(function(){
 		
 		selectReplyList();
 		
 		window.setInterval(selectReplyList , 2000);
+	
 		
 		$("#addReply").click(function(){
 			
@@ -433,9 +473,11 @@
 			});
 			console.log(count);
 		});
+	});
 		$("#addReply").click(function(){
 			var content = $("#replyContent").val();
-			var movieNo = <%=m.getMovieNo()%>;
+			movieNo = <%=m.getMovieNo()%>;
+			
 			
 			$.ajax({
 				url:"insertReply.re",
@@ -456,11 +498,12 @@
 				}
 			});
 		});
-	});
+
 	
 		
 		function selectReplyList(){
-			var movieNo = <%=m.getMovieNo()%>;
+			movieNo = <%=m.getMovieNo()%>;
+		
 			
 			$.ajax({
 				url:"rlist.re?movieNo=" + movieNo,
@@ -472,10 +515,11 @@
 					for(var i in list){
 						
 						value += '<tr class="reviewId">' +
+									'<td>' + '<input type="hidden" name="reviewNo" value="'+ list[i].reviewNo + '">' + '</td>' + 
 									'<td width="150">' + list[i].id + '</td>' +
 									'<td width="100">' + '<img src="<%=contextPath%>/resources/images/star2.png" width="20" height="20">' + list[i].reviewRating + '</td>' +
 									'<td width="500">' + list[i].reviewText + '</td>' + 
-									'<td width="50"><button type="button" class="reportBtns" style="margin-top:10px;"><img src="<%=contextPath%>/resources/images/bell.png" width="25" height="25"></button></td>' + 
+									'<td width="50"><button type="button" class="test111" style="margin-top:10px;"><img src="<%=contextPath%>/resources/images/bell.png" width="25" height="25"></button></td>' + 
 								'</tr>';
 						
 					}			
@@ -495,7 +539,7 @@
 			     $(this).addClass("on").prevAll("a").addClass("on");
 			     return false;
 			});
-			}
+		}
 		
 		
 		var slideIndex = 1;
@@ -526,34 +570,49 @@
 		  }
 	
 		  
-/* 		 function btnCL(){
-			var reviewChart = "";
+ 		$(document).on("click", ".test111", function(){
+	
+			reviewChart = $(this).parent().siblings().eq(1).text();
+			reviewContent = $(this).parent().siblings().eq(3).text();
+			reviewNo = $(this).parent().siblings().eq(0).children().val();
 			
-			$(".reviewId").each(function(){
-				
-			reviewChart = $(this).children().eq(0).text();
-				
+			
 			modal.style.display = "block";
-			})
 		
+			
 			console.log(reviewChart);
-		}		   
+			console.log(reviewContent);
+			console.log(reviewNo);
+			
+			form.reviewId.value = reviewChart;
+			form.reviewContent.value = reviewContent;
+			form.reviewNo.value = reviewNo;
+			form.movieNo.value = movieNo;
+		});	
+ 		
+ 
 		 $("#myModal span").click(function(){
 				modal.style.display = "none";
-			});
-        }
-			 */
-			 
-			 $(".reportBtns").click(function(){
-				 var reportBtns = $(this);
-				 var tr = reportBtns.patent().parent();
-				 var td = tr.children();
-				 
-				 var td0 = td.eq(0).text();
-				 
-				 console.log(td0);
-				 })
-			 
+		});
+		
+
+	$(function(){
+		$("#detailView").click(function(){
+			
+			reviewRe = $("#reviewRep").val()
+			console.log(reviewRe);
+			
+			form.reviewRe.value = reviewRe;
+			form.submit();
+			
+		});
+	});
+              
+
+
+ 
+			
+	
 		
 
 	</script>

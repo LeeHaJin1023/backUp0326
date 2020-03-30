@@ -1,6 +1,7 @@
 package com.kh.movie.model.dao;
 
 import static com.kh.common.JDBCTemplate.close;
+import static com.kh.common.JDBCTemplate.getConnection;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import com.kh.menubar.controller.TopMovieDto;
 import com.kh.movie.model.vo.Movie;
 import com.kh.movie.model.vo.MovieCBS;
 import com.kh.movie.model.vo.MovieLHJ;
+import com.kh.movie.model.vo.MovieStillLHJ;
 import com.kh.movie.model.vo.PageInfo;
 import com.kh.still_image.model.vo.StillImageCBS;
 
@@ -73,9 +75,42 @@ public class MovieDao {
 			close(pstmt);
 		}
 			return m;
-	
 		
 	}
+	
+	public List<MovieStillLHJ> selectMovieStill(Connection conn ,int movieNo) {
+			
+			
+			List<MovieStillLHJ> ms = new ArrayList<>();
+		
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			
+			String sql = prop.getProperty("selectStill");
+			
+			try {
+				pstmt = conn.prepareStatement(sql);
+				
+				pstmt.setInt(1, movieNo);
+				rset = pstmt.executeQuery();
+			
+				while(rset.next()) {
+					ms.add(new MovieStillLHJ(rset.getInt("MOVIE_NO"),
+											 rset.getString("MODIFY_NAME")));
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}finally {
+				close(rset);
+				close(pstmt);
+			}
+			return ms;
+			
+			
+			
+			
+		}
+		
 
   
 	

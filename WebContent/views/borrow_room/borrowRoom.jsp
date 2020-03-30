@@ -1,8 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, com.kh.borrow_room.model.vo.*" %>
+<%@ page import="java.util.ArrayList, com.kh.borrow_room.model.vo.*, javax.servlet.http.HttpSession" %>
 <%
 	ArrayList<BorrowRoom> list = (ArrayList<BorrowRoom>)request.getAttribute("list");
+	
+	HttpSession ses = request.getSession();
+	int loginUserNo = 0;
+	
+	if((Member)ses.getAttribute("loginUser") == null) {
+		loginUserNo =1;
+	}else {
+		loginUserNo = ((Member)session.getAttribute("loginUser")).getMemberNo();
+	}
 	
 
 	PageInfo pi = (PageInfo)request.getAttribute("pi");
@@ -57,7 +66,7 @@
 	.listArea tbody tr td, .listArea thead tr th{color:black;}
 	.listArea tbody td{ border-bottom:2px solid lightgray; padding:5px;}
 	.listArea{margin-top:50px;}
-	.listArea thead tr th{background-color:lightred; height:30px; border-radius:40px; box-shadow:3px 3px 3px 3px lightgray;}
+	.listArea thead tr th{background-color:lightred; height:30px; border-radius:40px; box-shadow:3px 3px 3px 3px lightgray; font-weight:bold;}
     .broomList tr:hover{
     	cursor:pointer;
     	box-shadow:3px 3px 3px 3px gray;
@@ -202,15 +211,16 @@
 		<%} %>    
 		</table>
  		</div>
- 		<%--
- 			로그인시 작성하기 보이기 폼 --%>
+ 		
+ 		<%--로그인시 작성하기 보이기 폼 --%>
  		 <div class="btns">
  	  
-	 	 	 <%-- <%if(loginUser.getId() != null){ %> --%>
+	 	 	 <% if(loginUser != null){ %>
 	 	  
 	 		<button onclick="insertBroom();">작성하기</button>
-	 		<%-- <%} %> --%>
+	 		
 		</div> 
+	 		 <%} %>
  	
  	
  		<!-- The Modal -->
@@ -270,19 +280,21 @@
 		
 		$(".broomList tr").click(function(){
 			
-			
-			modal.style.display = "block";
 			pwdNo = $(this).children().eq(5).val();
 			borrowRoomNo = $(this).children().eq(0).text();
-			/* status = $(this).children().eq(2).text();
+			status = $(this).children().eq(2).text();
+			console.log(status);
 			
-		 	
-			if(status.equals("N")){
-				modal.style.display = "none";
-			}  */
+			if(status == "Y"){
+			
+			modal.style.display = "block";
+			}else{
+				location.href = "<%=contextPath%>/broomDetail.br?borrowRoomNo=" + borrowRoomNo;
+			}
 		});
 		
 		$("#myModal span").click(function(){
+			
 			modal.style.display = "none";
 		});
 		

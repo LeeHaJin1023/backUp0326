@@ -56,10 +56,12 @@
     	display:none;
     	margin-left:200px;
     	height:150px;
+    	margin-top:100px;
+    	text-align:center;
     }
   
-	#contentNo{
-		width:50px;
+	.contentNo{
+		width:8%;
 		display:inline-block;
 		margin-left:50px;
 	
@@ -68,8 +70,9 @@
 	.contentQ{
 		display:inline-block;
 		margin-left:200px;
-		height:50px;
-		border-buttom:1px solid black;
+		height:40px;
+		width:50%;
+		text-align:center;
 	}
 	
 	#requestBtn{
@@ -82,10 +85,10 @@
 		float:left; 
 		margin-left:150px;
 	}
-	.content tr th{color:black; border-radius:40px; box-shadow:3px 3px 3px 3px lightgray;}
+	.content tr th{color:black; border-radius:40px; box-shadow:3px 3px 3px 3px lightgray; font-weight:bold; height:30px;}
 	.content tr td{border-bottom:2px solid black;}
 	.contentQ:hover{cursor:pointer;}
-	#contentType{
+	.contentType{
 	display:inline-block;}
 	
 	#topContent{
@@ -114,10 +117,10 @@
         .pagingArea{
         	width:200px;
         	margin-left:600px;
-        	margin-top:30px;
         	height:100px;
+        	margin-top:-150px;
         }
-	
+   
 	
     </style>
     
@@ -176,11 +179,10 @@
             		<%} else {%>
             		 	<%for(Faq f : list){ %>
             		 	<div id="contentArea">
-            		 		<div id="contentNo"><%=f.getFaqNo()%></div>
-            		 		<div id="contentType"><%=f.getType() %></div>
+            		 		<div class="contentNo"><%=f.getFaqNo()%></div>
+            		 		<div class="contentType"><%=f.getType() %></div>
             		 		<div class="contentQ"><%=f.getQuestion() %></div>
             		 		<div class="contentA"><%= f.getAnswer()%></div>
-            		 		
             		 	</div>
             		 	<%} %>
             		 <%} %>
